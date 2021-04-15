@@ -4,6 +4,7 @@ import (
 	"ethpaper/ethkey"
 	"ethpaper/paperwallet"
 	"flag"
+	"fmt"
 	"log"
 )
 
@@ -12,10 +13,15 @@ func main() {
 	templateFile := flag.String("template", "", "Specify wallet template image")
 	outputFile := flag.String("out", "wallet", "Specify paper wallet output path/filename")
 	borders := flag.Bool("noborders", false, "Generate QR codes without borders")
+	printkey := flag.Bool("printkey", true, "Prints out keys and Ethereum address")
 	flag.Parse()
 
 	// Generate Ethereum private key
 	key := ethkey.NewEthkey()
+	
+	if *printkey {
+                fmt.Printf("────\nPriv: %s\nPubl: %s\nAddr: %s\n────\n", key.Private(), key.Public(), key.Address())
+        }
 
 	// Generate QR codes
 	privImg := paperwallet.NewQR(key.Private(), *borders)
